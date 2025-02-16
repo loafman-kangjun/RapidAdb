@@ -11,19 +11,6 @@ class NavigationController extends GetxController {
   
   void changePage(int index) {
     selectedIndex.value = index;
-    switch (index) {
-      case 0:
-        Get.toNamed('/home');
-        break;
-      case 1:
-        Get.toNamed('/devices');
-        break;
-      case 2:
-        Get.toNamed('/settings');
-        break;
-      default:
-        Get.toNamed('/home');
-    }
   }
 }
 
@@ -37,12 +24,6 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      initialRoute: '/home',
-      getPages: [
-        GetPage(name: '/home', page: () => const HomePage()),
-        GetPage(name: '/devices', page: () => const DevicesPage()),
-        GetPage(name: '/settings', page: () => const SettingsPage()),
-      ],
       home: const DesktopHomePage(),
     );
   }
