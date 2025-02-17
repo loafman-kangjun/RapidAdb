@@ -5,6 +5,15 @@ void main() {
   runApp(const MyApp());
 }
 
+// 导航控制器
+class NavigationController extends GetxController {
+  var selectedIndex = 0.obs;
+  
+  void changePage(int index) {
+    selectedIndex.value = index;
+  }
+}
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -15,74 +24,28 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      // 设置初始命名路由
-      initialRoute: '/home',
-      getPages: [
-        GetPage(
-          name: '/home',
-          page: () => const DesktopHomePage(content: HomePage()),
-        ),
-        GetPage(
-          name: '/devices',
-          page: () => const DesktopHomePage(content: DevicesPage()),
-        ),
-        GetPage(
-          name: '/settings',
-          page: () => const DesktopHomePage(content: SettingsPage()),
-        ),
-      ],
+      home: const DesktopHomePage(),
     );
   }
 }
 
 class DesktopHomePage extends StatelessWidget {
-  final Widget content;
-  const DesktopHomePage({super.key, required this.content});
-
-  // 根据当前路由决定 NavigationRail 的选中项
-  int _getSelectedIndex() {
-    switch (Get.currentRoute) {
-      case '/home':
-        return 0;
-      case '/devices':
-        return 1;
-      case '/settings':
-        return 2;
-      default:
-        return 0;
-    }
-  }
+  const DesktopHomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final int selectedIndex = _getSelectedIndex();
-
+    // 初始化导航控制器
+    final NavigationController navigationController = Get.put(NavigationController());
+    
     return Scaffold(
       body: Row(
         children: [
           // 侧边导航栏
           NavigationRail(
             extended: true,
-            selectedIndex: selectedIndex,
+            selectedIndex: navigationController.selectedIndex.value,
             onDestinationSelected: (int index) {
-              // 根据索引切换到对应的命名页面
-              switch (index) {
-                case 0:
-                  if (Get.currentRoute != '/home') {
-                    Get.toNamed('/home');
-                  }
-                  break;
-                case 1:
-                  if (Get.currentRoute != '/devices') {
-                    Get.toNamed('/devices');
-                  }
-                  break;
-                case 2:
-                  if (Get.currentRoute != '/settings') {
-                    Get.toNamed('/settings');
-                  }
-                  break;
-              }
+              navigationController.changePage(index);
             },
             destinations: const [
               NavigationRailDestination(
@@ -99,12 +62,28 @@ class DesktopHomePage extends StatelessWidget {
               ),
             ],
           ),
+          // 垂直分割线
           const VerticalDivider(thickness: 1, width: 1),
-          // 主要内容区域，展示传入的页面
-          Expanded(child: content),
+          // 主要内容区域
+          Expanded(
+            child: Obx(() => _buildPage(navigationController.selectedIndex.value)),
+          ),
         ],
       ),
     );
+  }
+
+  Widget _buildPage(int index) {
+    switch (index) {
+      case 0:
+        return const HomePage();
+      case 1:
+        return const DevicesPage();
+      case 2:
+        return const SettingsPage();
+      default:
+        return const HomePage();
+    }
   }
 }
 
@@ -114,7 +93,9 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text('首页'));
+    return const Center(
+      child: Text('首页'),
+    );
   }
 }
 
@@ -123,7 +104,9 @@ class DevicesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text('设备页面'));
+    return const Center(
+      child: Text('设备页面'),
+    );
   }
 }
 
@@ -132,6 +115,8 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text('设置页面'));
+    return const Center(
+      child: Text('设置页面'),
+    );
   }
 }
