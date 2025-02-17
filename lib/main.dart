@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'controllers/navigation_controller.dart';
+import 'pages/home_page.dart';
+import 'pages/devices_page.dart';
+import 'pages/settings_page.dart';
 
 void main() {
   runApp(const MyApp());
-}
-
-// 导航控制器
-class NavigationController extends GetxController {
-  var selectedIndex = 0.obs;
-  
-  void changePage(int index) {
-    selectedIndex.value = index;
-  }
 }
 
 class MyApp extends StatelessWidget {
@@ -84,39 +79,5 @@ class DesktopHomePage extends StatelessWidget {
       default:
         return const HomePage();
     }
-  }
-}
-
-// 示例页面
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text('首页'),
-    );
-  }
-}
-
-class DevicesPage extends StatelessWidget {
-  const DevicesPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text('设备页面'),
-    );
-  }
-}
-
-class SettingsPage extends StatelessWidget {
-  const SettingsPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text('设置页面'),
-    );
   }
 }
