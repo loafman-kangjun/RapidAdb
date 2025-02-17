@@ -36,7 +36,7 @@ class DesktopHomePage extends StatelessWidget {
       body: Row(
         children: [
           // 侧边导航栏
-          NavigationRail(
+          Obx(() => NavigationRail(
             extended: true,
             selectedIndex: navigationController.selectedIndex.value,
             onDestinationSelected: (int index) {
@@ -56,7 +56,7 @@ class DesktopHomePage extends StatelessWidget {
                 label: Text('设置'),
               ),
             ],
-          ),
+          )),
           // 垂直分割线
           const VerticalDivider(thickness: 1, width: 1),
           // 主要内容区域
